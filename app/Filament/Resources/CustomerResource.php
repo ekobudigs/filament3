@@ -6,6 +6,7 @@ use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers;
 use App\Models\Customer;
 use Filament\Forms;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,28 +31,34 @@ class CustomerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('date_of_birth')
-                    ->required(),
-                Forms\Components\TextInput::make('address')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('zip_code')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('city')
-                    ->required()
-                    ->maxLength(255),
+                Section::make([
+                    Forms\Components\TextInput::make('name')
+                        ->maxValue(50)
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('email')
+                        ->label('Email Address')
+                        ->email()
+                        ->required()
+                        ->unique(ignoreRecord: true),
+                    Forms\Components\TextInput::make('phone')
+                        ->tel()
+                        ->required()
+                        ->maxValue(50),
+                    Forms\Components\DatePicker::make('date_of_birth')
+                        ->required(),
+                    Forms\Components\TextInput::make('city')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('zip_code')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('address')
+                        ->required()
+                        ->maxLength(255)
+                        ->columnSpanFull(),
+                ])->columns(2)
+
             ]);
     }
 
