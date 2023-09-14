@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\BrandResource\RelationManagers\ProductsRelationManager;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Product;
@@ -23,6 +24,7 @@ use Filament\Forms\Components\MarkdownEditor;
 use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Filament\Resources\CategoryResource\RelationManagers\ProductsRelationManager as RelationManagersProductsRelationManager;
 
 class CategoryResource extends Resource
 {
@@ -31,6 +33,8 @@ class CategoryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?int $navigationSort = 4;
     protected static ?string $navigationGroup = 'Shop';
+    //agar tidak tampil
+    // protected static bool $shouldRegisterNavigation = false;
 
     public static function getGloballySearchableAttributes(): array
     {
@@ -112,7 +116,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagersProductsRelationManager::class
         ];
     }
 
