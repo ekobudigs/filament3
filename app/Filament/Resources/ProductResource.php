@@ -42,6 +42,17 @@ class ProductResource extends Resource
     protected static ?int $navigationSort = 0;
     protected static ?string $navigationGroup = 'Shop';
     protected static ?string $recordTitleAttribute = 'name';
+    // protected static ?string $activeNavigationIcon = 'heroicon-o-document-text';
+
+    // public static function getNavigationBadge(): ?string
+    // {
+    //     return 'NEW';
+    // }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 
     protected static int $globalSearchResultsLimit = 20;
 
@@ -81,7 +92,7 @@ class ProductResource extends Resource
                     ])->columns(2),
                     Section::make('Pricing & Inventory')->schema([
                         TextInput::make('sku')->label('SKU (Stock Keeping Unit)')->unique()->required(),
-                        TextInput::make('price')->numeric()->regex('/^.+@.+$/i')->required(),
+                        TextInput::make('price')->numeric()->required(),
                         TextInput::make('quantity')->numeric()->minValue(0)->maxValue(100)->required(),
                         Select::make('type')->options([
                             'downloadable' => ProductTypeEnum::DOWNLOADBLE->value,
@@ -99,7 +110,8 @@ class ProductResource extends Resource
                         FileUpload::make('image')->directory('form-attachments')->preserveFilenames()->image()->imageEditor()
                     ])->collapsible(),
                     Section::make('Associations')->schema([
-                        Select::make('brand_id')->relationship('brand', 'name')
+                        Select::make('brand_id')->relationship('brand', 'name')->required(),
+                        Select::make('categories')->relationship('categories', 'name')->multiple()->required()
                     ]),
                 ])
             ]);
